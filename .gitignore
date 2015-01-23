@@ -8,4 +8,7 @@ applet/
 # IDE stuff
 atlassian-ide-plugin.xml
 *.iml
-*.idea
+.idea
+
+# OSX extra files
+*.DS_Store

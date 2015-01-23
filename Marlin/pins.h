@@ -904,9 +904,9 @@
   #define SCK_PIN          52
   #define MISO_PIN         50
   #define MOSI_PIN         51
-  #define MAX6675_SS       53
+  #define MAX6675_SS       66// Do not use pin 53 if there is even the remote possibility of using Dsplay/SD card
 #else
-  #define MAX6675_SS       49
+  #define MAX6675_SS       66// Do not use pin 49 as this is tied to the switch inside the SD card socket to detect if there is an SD card present
 #endif
 
 #endif // RAMPS_OLD || RAMPS_13_EFB || RAMPS_13_EEB || RAMPS_13_EFF || 3DRAG
@@ -1400,6 +1400,7 @@
 #define PS_ON_PIN          12
 #define KILL_PIN           -1
 #define SUICIDE_PIN        54  //PIN that has to be turned on right after start, to keep power flowing.
+#define SERVO0_PIN         13  // untested
 
 #ifdef ULTRA_LCD
 
@@ -1752,12 +1753,16 @@
 #define E0_ENABLE_PIN      19
 
 #define HEATER_0_PIN       21  // Extruder
-#define HEATER_1_PIN       -1
-#define HEATER_2_PIN       -1
+#define HEATER_1_PIN       46
+#define HEATER_2_PIN       47
 #define HEATER_BED_PIN     20  // Bed
-#define FAN_PIN            22  // Fan
-// You may need to change FAN_PIN to 16 because Marlin isn't using fastio.h
-// for the fan and Teensyduino uses a different pin mapping.
+// If soft or fast PWM is off then use Teensyduino pin numbering, Marlin
+// fastio pin numbering otherwise
+#ifdef FAN_SOFT_PWM || FAST_PWM_FAN
+        #define FAN_PIN        22  // Fan
+#else
+        #define FAN_PIN        16  // Fan
+#endif
 
 #if MB(TEENSYLU)  // Teensylu
   #define X_STOP_PIN         13
@@ -1776,8 +1781,8 @@
   #endif //FILAMENT_SENSOR
 #endif
 
-#define TEMP_1_PIN         -1
-#define TEMP_2_PIN         -1
+#define TEMP_1_PIN         2
+#define TEMP_2_PIN         3
 
 #define SDPOWER            -1
 #define SDSS                8
@@ -1904,6 +1909,8 @@
   #define X_STOP_PIN         13
   #define Y_STOP_PIN         14
   #define Z_STOP_PIN         15
+//  #define Z_STOP_PIN         36  // For inductive sensor.
+
   #define TEMP_0_PIN          7  // Extruder / Analog pin numbering
   #define TEMP_BED_PIN        6  // Bed / Analog pin numbering
 
@@ -1914,7 +1921,6 @@
 #define SDSS               20  // PB0 - 8 in marlin env.
 #define LED_PIN            -1
 #define PS_ON_PIN          -1
-#define KILL_PIN           -1
 #define ALARM_PIN          -1
 #define SDCARDDETECT       -1
 
@@ -1933,13 +1939,24 @@
 #define LCD_PINS_D5        -1
 #define LCD_PINS_D6        -1
 #define LCD_PINS_D7        -1
-#define BTN_EN1            -1
-#define BTN_EN2            -1
-#define BTN_ENC            -1
 
+#ifdef SAV_3DLCD
 // For LCD SHIFT register LCD
-#define SR_DATA_PIN         0
-#define SR_CLK_PIN          1
+#define SR_DATA_PIN         1
+#define SR_CLK_PIN          0
+
+#define BTN_EN1            41
+#define BTN_EN2            40
+#define BTN_ENC            12
+
+#define KILL_PIN           42 // A2 = 42 - teensy = 40
+#define HOME_PIN          -1 // A4 = marlin 44 - teensy = 42
+
+#ifdef NUM_SERVOS
+  #define SERVO0_PIN       41 // In teensy's pin definition for pinMode (in Servo.cpp)
+#endif
+
+#endif
 
 #endif // SAV_MKI
 
@@ -2412,6 +2429,20 @@ DaveX plan for Teensylu/printrboard-type pinouts (ref teensylu & sprinter) for a
 
 #define LARGE_FLASH true
 
+// servo support
+#ifdef NUM_SERVOS
+ #define SERVO0_PIN 22 //motor header MX1
+ #if NUM_SERVOS > 1
+ #define SERVO1_PIN 23 //Motor header MX2
+ #endif
+ #if NUM_SERVOS > 2
+ #define SERVO2_PIN 24 //Motor header MX3
+ #endif
+ #if NUM_SERVOS > 3
+ #define SERVO2_PIN 5 //pwm header pin 5
+ #endif
+#endif
+
 #define X_STEP_PIN 37
 #define X_DIR_PIN 48
 #define X_MIN_PIN 12
@@ -2470,7 +2501,13 @@ DaveX plan for Teensylu/printrboard-type pinouts (ref teensylu & sprinter) for a
 #define SDPOWER            -1
 #define SDSS               53
 #define LED_PIN            13
-#define FAN_PIN            8
+#define FAN_PIN            8  
+/**********************************************************
+Fan Pins
+Fan_0 8
+Fan_1 6
+Fan_2 2
+***********************************************************/
 #define PS_ON_PIN          4
 #define KILL_PIN           -1 //80 with Smart Controller LCD
 #define SUICIDE_PIN        -1  //PIN that has to be turned on right after start, to keep power flowing.
