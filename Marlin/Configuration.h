@@ -78,7 +78,11 @@
 #define DELTA_DIAGONAL_ROD 300.0 // mm
 
 // Horizontal offset from middle of printer to smooth rod center.
-#define DELTA_SMOOTH_ROD_OFFSET 212.357 // mm
+//#define DELTA_SMOOTH_ROD_OFFSET 212.357 // mm
+// rgg to manually get Z0 at center after per-tower adjustments
+// at 213.0 I'm .1mm too high at the center.
+// 212.90 is too high. 212.95 too
+#define DELTA_SMOOTH_ROD_OFFSET 212.99 // mm
 
 // Horizontal offset of the universal joints on the end effector.
 #define DELTA_EFFECTOR_OFFSET 30.0 // mm
@@ -403,7 +407,9 @@ const bool Z_MAX_ENDSTOP_INVERTING = false; // set to true to invert the logic o
 // For deltabots this means top and center of the Cartesian print volume.
 #define MANUAL_X_HOME_POS 0
 #define MANUAL_Y_HOME_POS 0
-#define MANUAL_Z_HOME_POS 280.67  // For delta: Distance between nozzle and print surface after homing.
+//#define MANUAL_Z_HOME_POS 280.67  // For delta: Distance between nozzle and print surface after homing.
+// rgg - provide enough room to adjust variations on each tower
+#define MANUAL_Z_HOME_POS 279.0  // For delta: Distance between nozzle and print surface after homing.
 
 //// MOVEMENT SETTINGS
 #define NUM_AXIS 4 // The axis order in all axis related arrays is X, Y, Z, E
