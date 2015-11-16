@@ -3,6 +3,19 @@
 
 #include "boards.h"
 
+// Change Log 
+// 
+// V0.80 - 2015.04.30
+// - Moved retraction point to X125 Y-60 to accomodate longer K-Head
+// - Changed XYZ Jerk setting to 4
+// - Changed Accel to 1200
+// - Changed E Jerk to 10
+//
+// V0.81 - 2015.06.11
+// - Tuned for new 24V heater cartridge (22AWG wires)
+//
+
+
 // This configuration file contains the basic settings.
 // Advanced settings can be found in Configuration_adv.h
 // BASIC SETTINGS: select your board type, temperature sensor type, axis scaling, and endstop configuration
@@ -29,7 +42,7 @@
 
 // SERIAL_PORT selects which serial port should be used for communication with the host.
 // This allows the connection of wireless adapters (for instance) to non-default port pins.
-// Serial port 0 is still used by the Arduino bootloader regardless of this setting.
+// Serial port 0 is still used by the Arduino bootloader regardless of this +setting.
 #define SERIAL_PORT 0
 
 // This determines the communication speed of the printer
@@ -45,7 +58,7 @@
 #endif
 
 // Define this to set a custom name for your generic Mendel,
-#define CUSTOM_MENDEL_NAME "OB Kossel Pro HBP"
+#define CUSTOM_MENDEL_NAME "Seattle Automationz ZT-KIT-00255 (Firmware: 0.81)"
 
 // Define this to set a unique identifier for this printer, (Used by some programs to differentiate between machines)
 // You can use an online service to generate a random UUID. (eg http://www.uuidgenerator.net/version4)
@@ -186,7 +199,7 @@
 // Comment the following line to disable PID and enable bang-bang.
 #define PIDTEMP
 #define BANG_MAX 255 // limits current to nozzle while in bang-bang mode; 255=full current
-#define PID_MAX 125 // limits current to nozzle while PID is active (see PID_FUNCTIONAL_RANGE below); 255=full current
+#define PID_MAX 255 // limits current to nozzle while PID is active (see PID_FUNCTIONAL_RANGE below); 255=full current
 #ifdef PIDTEMP
   //#define PID_DEBUG // Sends debug data to the serial port.
   //#define PID_OPENLOOP 1 // Puts PID in open loop. M104/M140 sets the output power from 0 to PID_MAX
@@ -204,9 +217,9 @@
 //    #define  DEFAULT_Kd 114
 
 // Kossel Pro
-    #define  DEFAULT_Kp 16.3
-    #define  DEFAULT_Ki 2.69
-    #define  DEFAULT_Kd 24.94
+    #define  DEFAULT_Kp 14.44
+    #define  DEFAULT_Ki 1.06
+    #define  DEFAULT_Kd 49.40
 
 // MakerGear
 //    #define  DEFAULT_Kp 7.0
@@ -298,15 +311,15 @@ your extruder heater takes 2 minutes to hit the target on heating.
 // uncomment the 2 defines below:
 
 // Parameters for all extruder heaters
-#define THERMAL_RUNAWAY_PROTECTION_PERIOD 10 //in seconds
-#define THERMAL_RUNAWAY_PROTECTION_HYSTERESIS 4 // in degree Celsius
+#define THERMAL_RUNAWAY_PROTECTION_PERIOD 60 //in seconds
+#define THERMAL_RUNAWAY_PROTECTION_HYSTERESIS 15 // in degree Celsius
 
 // If you want to enable this feature for your bed heater,
 // uncomment the 2 defines below:
 
 // Parameters for the bed heater
-#define THERMAL_RUNAWAY_PROTECTION_BED_PERIOD 30 //in seconds
-#define THERMAL_RUNAWAY_PROTECTION_BED_HYSTERESIS 5 // in degree Celsius
+#define THERMAL_RUNAWAY_PROTECTION_BED_PERIOD 60 //in seconds
+#define THERMAL_RUNAWAY_PROTECTION_BED_HYSTERESIS 15 // in degree Celsius
 //===========================================================================
 
 
@@ -389,7 +402,7 @@ const bool Z_MAX_ENDSTOP_INVERTING = false; // set to true to invert the logic o
 #define Y_MAX_POS DELTA_PRINTABLE_RADIUS
 #define Y_MIN_POS -DELTA_PRINTABLE_RADIUS
 #define Z_MAX_POS MANUAL_Z_HOME_POS
-#define Z_MIN_POS 0
+#define Z_MIN_POS -5
 
 #define X_MAX_LENGTH (X_MAX_POS - X_MIN_POS)
 #define Y_MAX_LENGTH (Y_MAX_POS - Y_MIN_POS)
@@ -403,7 +416,7 @@ const bool Z_MAX_ENDSTOP_INVERTING = false; // set to true to invert the logic o
 // For deltabots this means top and center of the Cartesian print volume.
 #define MANUAL_X_HOME_POS 0
 #define MANUAL_Y_HOME_POS 0
-#define MANUAL_Z_HOME_POS 280.67  // For delta: Distance between nozzle and print surface after homing.
+#define MANUAL_Z_HOME_POS 290  // For delta: Distance between nozzle and print surface after homing.
 
 //// MOVEMENT SETTINGS
 #define NUM_AXIS 4 // The axis order in all axis related arrays is X, Y, Z, E
@@ -498,17 +511,17 @@ const bool Z_MAX_ENDSTOP_INVERTING = false; // set to true to invert the logic o
     #define TOUCH_PROBE_DEPLOY_3_Z 100.0
     #define TOUCH_PROBE_DEPLOY_3_FEEDRATE (HOMING_FEEDRATE_X/2)
 
-    #define TOUCH_PROBE_RETRACT_1_X 36.00 // Line up with bed retaining clip
-    #define TOUCH_PROBE_RETRACT_1_Y -122.00
+    #define TOUCH_PROBE_RETRACT_1_X 125.00 // Line up with bed retaining clip
+    #define TOUCH_PROBE_RETRACT_1_Y -60.00
     #define TOUCH_PROBE_RETRACT_1_Z 75.0
     #define TOUCH_PROBE_RETRACT_1_FEEDRATE HOMING_FEEDRATE_X
-    #define TOUCH_PROBE_RETRACT_2_X 36.00 // move down to retract probe
-    #define TOUCH_PROBE_RETRACT_2_Y -122.00
-    #define TOUCH_PROBE_RETRACT_2_Z 5.0
+    #define TOUCH_PROBE_RETRACT_2_X 125.00 // move down to retract probe
+    #define TOUCH_PROBE_RETRACT_2_Y -60.00
+    #define TOUCH_PROBE_RETRACT_2_Z 5
     #define TOUCH_PROBE_RETRACT_2_FEEDRATE (HOMING_FEEDRATE_Z/4)
-    #define TOUCH_PROBE_RETRACT_3_X 0.0  // return to 0,0,100
-    #define TOUCH_PROBE_RETRACT_3_Y 0.0
-    #define TOUCH_PROBE_RETRACT_3_Z 100.0
+    #define TOUCH_PROBE_RETRACT_3_X 125.00  // return to 0,0,100
+    #define TOUCH_PROBE_RETRACT_3_Y -60.00
+    #define TOUCH_PROBE_RETRACT_3_Z 75.00
     #define TOUCH_PROBE_RETRACT_3_FEEDRATE HOMING_FEEDRATE_Z
 
   #else  // not AUTO_BED_LEVELING_GRID
@@ -581,9 +594,9 @@ const bool Z_MAX_ENDSTOP_INVERTING = false; // set to true to invert the logic o
 
 #define DEFAULT_AXIS_STEPS_PER_UNIT   {XYZ_STEPS, XYZ_STEPS, XYZ_STEPS, 184.8}
 #define DEFAULT_MAX_FEEDRATE          {200, 200, 200, 200}    // (mm/sec)
-#define DEFAULT_MAX_ACCELERATION      {9000,9000,9000,9000}    // X, Y, Z, E maximum start speed for accelerated moves. E default values are good for skeinforge 40+, for older versions raise them a lot.
+#define DEFAULT_MAX_ACCELERATION      {1200,1200,1200,9000}    // X, Y, Z, E maximum start speed for accelerated moves. E default values are good for skeinforge 40+, for older versions raise them a lot.
 
-#define DEFAULT_ACCELERATION          3000 // X, Y, Z and E max acceleration in mm/s^2 for printing moves
+#define DEFAULT_ACCELERATION          800 // X, Y, Z and E max acceleration in mm/s^2 for printing moves
 #define DEFAULT_RETRACT_ACCELERATION  9000 // X, Y, Z and E max acceleration in mm/s^2 for retracts
 
 // Offset of the extruders (uncomment if using more than one and relying on firmware to position when changing).
@@ -593,9 +606,9 @@ const bool Z_MAX_ENDSTOP_INVERTING = false; // set to true to invert the logic o
 // #define EXTRUDER_OFFSET_Y {0.0, 5.00}  // (in mm) for each extruder, offset of the hotend on the Y axis
 
 // The speed change that does not require acceleration (i.e. the software might assume it can be done instantaneously)
-#define DEFAULT_XYJERK                5.0    // (mm/sec)
-#define DEFAULT_ZJERK                 5.0    // (mm/sec)
-#define DEFAULT_EJERK                 20.0    // (mm/sec)
+#define DEFAULT_XYJERK                4.0    // (mm/sec)
+#define DEFAULT_ZJERK                 4.0    // (mm/sec)
+#define DEFAULT_EJERK                 10.0    // (mm/sec)
 
 //===========================================================================
 //=============================Additional Features===========================
